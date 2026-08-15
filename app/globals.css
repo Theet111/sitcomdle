@@ -1,35 +1,35 @@
 @import "tailwindcss";
 
 :root {
-  color-scheme: dark;
-  --bg: #000000;
-  --bg-soft: #050505;
-  --surface: #1c2039;
-  --surface-2: #252a49;
-  --line: #353b60;
-  --line-strong: #4c557d;
-  --text: #fff8ec;
-  --muted: #afb3ca;
-  --faint: #747a9c;
-  --accent: #ff5f7d;
-  --accent-hover: #ff7892;
-  --accent-2: #ffd45c;
-  --accent-3: #62dfca;
-  --correct-bg: #0f6b50;
-  --correct-line: #25c793;
-  --correct-text: #effff5;
-  --partial-bg: #795707;
-  --partial-line: #d6a416;
-  --partial-text: #fff4cf;
-  --incorrect-bg: #7c243c;
-  --incorrect-line: #ca3e61;
-  --incorrect-text: #ffece8;
-  --up-bg: #783600;
-  --up-line: #db6c21;
-  --up-text: #ff9b49;
-  --down-bg: #4d2076;
-  --down-line: #8f51c7;
-  --down-text: #c082ff;
+ color-scheme: dark;
+--bg: #1a1a1a;
+--bg-soft: #111521;
+--surface: #182038;
+--surface-2: #222B49;
+--line: #333D62;
+--line-strong: #4A567F;
+--text: #FFF8EC;
+--muted: #B8B9C8;
+--faint: #7D829B;
+--accent: #FF5F87;
+--accent-hover: #FF7798;
+--accent-2: #F2C14E;   
+--accent-3: #41C7B9;   
+--correct-bg: #176F63;
+--correct-line: #41C7B9;
+--correct-text: #F0FFFB;
+--partial-bg: #725B13;
+--partial-line: #F2C14E;
+--partial-text: #FFF4C7;
+--incorrect-bg: #7C3042;
+--incorrect-line: #C44D61;
+--incorrect-text: #FFF0F1;
+--up-bg: #874936;
+--up-line: #E97A5F;
+--up-text: #FFB09A;
+--down-bg: #513A83;
+--down-line: #9C7CFF;
+--down-text: #C8B7FF;
 }
 
 @theme inline {
@@ -201,7 +201,7 @@ summary {
 
 .sd-cell--empty {
   border-color: #343434;
-  background: #181c34;
+  background: #1e1e1e;
 }
 
 .sd-cell--name {
