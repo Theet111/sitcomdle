@@ -1,38 +1,35 @@
 @import "tailwindcss";
 
-/* -------------------------------------------------------------------------- */
-/*  Tokens                                                                     */
-/* -------------------------------------------------------------------------- */
-
 :root {
   color-scheme: dark;
-
-  --bg: #07080d;
-  --bg-soft: #0b0d14;
-  --surface: #12151f;
-  --surface-2: #171b27;
-  --line: rgba(255, 255, 255, 0.07);
-  --line-strong: rgba(255, 255, 255, 0.14);
-
-  --text: #eceef6;
-  --muted: #878ea3;
-  --faint: #5b6175;
-
-  /* Signature: neon marquee pink -> amber. */
-  --accent: #ff2f88;
-  --accent-2: #ffb43d;
-
-  --correct-bg: linear-gradient(160deg, #14512f 0%, #0d3a22 100%);
-  --correct-line: #1f9c58;
-  --correct-text: #86f3b4;
-
-  --partial-bg: linear-gradient(160deg, #55400c 0%, #3d2d06 100%);
-  --partial-line: #c69316;
-  --partial-text: #ffd873;
-
-  --incorrect-bg: linear-gradient(160deg, #431722 0%, #2f101a 100%);
-  --incorrect-line: #92304a;
-  --incorrect-text: #ff9dae;
+  --bg: #000000;
+  --bg-soft: #050505;
+  --surface: #1c2039;
+  --surface-2: #252a49;
+  --line: #353b60;
+  --line-strong: #4c557d;
+  --text: #fff8ec;
+  --muted: #afb3ca;
+  --faint: #747a9c;
+  --accent: #ff5f7d;
+  --accent-hover: #ff7892;
+  --accent-2: #ffd45c;
+  --accent-3: #62dfca;
+  --correct-bg: #0f6b50;
+  --correct-line: #25c793;
+  --correct-text: #effff5;
+  --partial-bg: #795707;
+  --partial-line: #d6a416;
+  --partial-text: #fff4cf;
+  --incorrect-bg: #7c243c;
+  --incorrect-line: #ca3e61;
+  --incorrect-text: #ffece8;
+  --up-bg: #783600;
+  --up-line: #db6c21;
+  --up-text: #ff9b49;
+  --down-bg: #4d2076;
+  --down-line: #8f51c7;
+  --down-text: #c082ff;
 }
 
 @theme inline {
@@ -45,89 +42,114 @@
   --color-muted: var(--muted);
   --color-faint: var(--faint);
   --color-accent: var(--accent);
-  --color-accent-2: var(--accent-2);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: Arial, Helvetica, sans-serif;
+  --font-mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
 }
 
 * {
+  box-sizing: border-box;
   -webkit-tap-highlight-color: transparent;
 }
 
-/* `clip` (not `hidden`) so the drifting stage glows can't widen the page
-   without turning the root into a scroll container. */
+html {
+  scroll-behavior: smooth;
+}
+
 html,
 body {
   overflow-x: clip;
 }
 
 body {
+  margin: 0;
   background: var(--bg);
   color: var(--text);
-  font-family: var(--font-geist-sans), system-ui, sans-serif;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
-/* Ambient stage lighting behind everything. */
-.sd-stage::before,
-.sd-stage::after {
-  content: "";
-  position: fixed;
-  inset-inline: 0;
-  height: 620px;
-  pointer-events: none;
-  z-index: 0;
+button,
+input,
+summary {
+  font: inherit;
 }
 
-.sd-stage::before {
-  top: -320px;
-  background: radial-gradient(
-    50% 50% at 50% 50%,
-    color-mix(in srgb, var(--accent) 22%, transparent) 0%,
-    transparent 70%
-  );
-  animation: sd-drift 14s ease-in-out infinite alternate;
+button,
+a,
+summary {
+  outline-offset: 4px;
 }
 
-.sd-stage::after {
-  bottom: -420px;
-  background: radial-gradient(
-    50% 50% at 50% 50%,
-    color-mix(in srgb, var(--accent-2) 12%, transparent) 0%,
-    transparent 70%
-  );
-  animation: sd-drift 18s ease-in-out infinite alternate-reverse;
+.sd-topbar {
+  height: 108px;
+  border-bottom: 2px solid var(--accent-2);
+  background: var(--bg-soft);
 }
 
-/* -------------------------------------------------------------------------- */
-/*  Grid track — header row and guess rows share one column template          */
-/* -------------------------------------------------------------------------- */
+.sd-icon-button {
+  display: grid;
+  width: 40px;
+  height: 40px;
+  place-items: center;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--faint);
+  transition: color 160ms ease, background 160ms ease;
+}
 
+.sd-icon-button:hover {
+  background: var(--surface-2);
+  color: var(--text);
+}
+
+.sd-kicker {
+  color: var(--accent-3);
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.sd-board-shell {
+  --board-w: 1076px;
+  width: min(100%, var(--board-w));
+  margin-inline: auto;
+}
+
+/* The header and every guess row share this exact track. */
 .sd-track {
-  --cell-w: 104px;
-  --name-w: 176px;
+  --cell-w: 118px;
+  --name-w: 180px;
   --gap: 10px;
   display: grid;
   grid-template-columns: var(--name-w) repeat(7, var(--cell-w));
   gap: var(--gap);
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1100px) {
+  .sd-board-shell {
+    --board-w: 948px;
+  }
+
   .sd-track {
-    --cell-w: 92px;
-    --name-w: 148px;
+    --cell-w: 104px;
+    --name-w: 164px;
     --gap: 8px;
   }
 }
 
 @media (max-width: 520px) {
+  .sd-topbar {
+    height: 84px;
+  }
+
   .sd-track {
-    --cell-w: 84px;
-    --name-w: 126px;
+    --cell-w: 90px;
+    --name-w: 132px;
     --gap: 7px;
   }
 }
 
-/* Keeps the character column pinned while the attributes scroll on mobile. */
 .sd-sticky {
   position: sticky;
   left: 0;
@@ -138,17 +160,18 @@ body {
   content: "";
   position: absolute;
   inset: -2px calc(var(--gap) * -1) -2px -16px;
-  background: var(--bg);
   z-index: -1;
+  background: var(--bg);
 }
 
 .sd-scroll {
+  margin-inline: -16px;
+  padding-inline: 16px;
+  padding-bottom: 10px;
   overflow-x: auto;
   overflow-y: visible;
-  scrollbar-width: thin;
   scrollbar-color: var(--line-strong) transparent;
-  padding-inline: 16px;
-  margin-inline: -16px;
+  scrollbar-width: thin;
 }
 
 .sd-scroll::-webkit-scrollbar {
@@ -156,228 +179,142 @@ body {
 }
 
 .sd-scroll::-webkit-scrollbar-thumb {
+  border-radius: 99px;
   background: var(--line-strong);
-  border-radius: 999px;
 }
-
-/* -------------------------------------------------------------------------- */
-/*  Cells                                                                      */
-/* -------------------------------------------------------------------------- */
 
 .sd-cell {
   position: relative;
   display: flex;
+  height: 84px;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 2px;
-  height: 78px;
-  padding: 6px 7px;
-  border-radius: 16px;
+  overflow: hidden;
+  padding: 7px;
   border: 1px solid var(--line);
+  border-radius: 11px;
   background: var(--surface);
   text-align: center;
-  overflow: hidden;
-}
-
-@media (max-width: 520px) {
-  .sd-cell {
-    height: 70px;
-    border-radius: 14px;
-  }
 }
 
 .sd-cell--empty {
-  background: color-mix(in srgb, var(--surface) 60%, transparent);
-  border-style: dashed;
-  border-color: rgba(255, 255, 255, 0.05);
+  border-color: #343434;
+  background: #181c34;
 }
 
 .sd-cell--name {
   align-items: flex-start;
-  justify-content: center;
-  gap: 6px;
-  padding-inline: 12px;
+  padding-inline: 13px;
   background: var(--surface-2);
   text-align: left;
 }
 
 .sd-cell--correct {
-  background: var(--correct-bg);
   border-color: var(--correct-line);
+  background: var(--correct-bg);
   color: var(--correct-text);
 }
 
 .sd-cell--partial {
-  background: var(--partial-bg);
   border-color: var(--partial-line);
+  background: var(--partial-bg);
   color: var(--partial-text);
 }
 
 .sd-cell--incorrect {
-  background: var(--incorrect-bg);
   border-color: var(--incorrect-line);
+  background: var(--incorrect-bg);
   color: var(--incorrect-text);
 }
 
-/* -------------------------------------------------------------------------- */
-/*  Reveal choreography                                                        */
-/* -------------------------------------------------------------------------- */
-
-.sd-reveal {
-  transform-origin: center top;
-  animation: sd-flip 560ms cubic-bezier(0.22, 1.2, 0.36, 1) both;
-  animation-delay: calc(var(--i, 0) * 110ms);
+.sd-cell--up {
+  border-color: var(--up-line);
+  background: var(--up-bg);
+  color: var(--up-text);
 }
 
-.sd-reveal::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    100deg,
-    transparent 30%,
-    rgba(255, 255, 255, 0.22) 50%,
-    transparent 70%
-  );
-  transform: translateX(-120%);
-  animation: sd-sheen 700ms ease-out both;
-  animation-delay: calc(var(--i, 0) * 110ms + 240ms);
-  pointer-events: none;
+.sd-cell--down {
+  border-color: var(--down-line);
+  background: var(--down-bg);
+  color: var(--down-text);
+}
+
+@media (max-width: 520px) {
+  .sd-cell {
+    height: 74px;
+    border-radius: 9px;
+  }
+}
+
+/* A quick reveal keeps the game tactile without making the grid theatrical. */
+.sd-reveal {
+  transform-origin: center top;
+  animation: sd-reveal 340ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: calc(var(--i, 0) * 85ms);
 }
 
 .sd-row-enter {
-  animation: sd-row-in 420ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation: sd-row-in 240ms ease-out both;
 }
 
 .sd-arrow {
-  animation: sd-pop 380ms cubic-bezier(0.34, 1.6, 0.5, 1) both;
-  animation-delay: calc(var(--i, 0) * 110ms + 300ms);
+  animation: sd-pop 220ms ease-out both;
+  animation-delay: calc(var(--i, 0) * 85ms + 120ms);
 }
 
 .sd-win {
-  animation: sd-win-glow 1.4s ease-in-out 700ms 2;
-}
-
-.sd-pulse {
-  animation: sd-pulse 2.4s ease-in-out infinite;
+  animation: sd-win 800ms ease-out 520ms both;
 }
 
 .sd-shake {
-  animation: sd-shake 380ms ease-in-out both;
-}
-
-@keyframes sd-flip {
-  0% {
-    opacity: 0;
-    transform: perspective(700px) rotateX(-96deg) scale(0.94);
-  }
-  58% {
-    opacity: 1;
-    transform: perspective(700px) rotateX(12deg) scale(1.03);
-  }
-  100% {
-    opacity: 1;
-    transform: perspective(700px) rotateX(0deg) scale(1);
-  }
-}
-
-@keyframes sd-sheen {
-  to {
-    transform: translateX(120%);
-  }
-}
-
-@keyframes sd-row-in {
-  from {
-    opacity: 0;
-    transform: translateY(14px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes sd-pop {
-  from {
-    opacity: 0;
-    transform: scale(0.4) translateY(4px);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1) translateY(0);
-  }
-}
-
-@keyframes sd-win-glow {
-  0%,
-  100% {
-    box-shadow: 0 0 0 0 color-mix(in srgb, var(--correct-line) 0%, transparent);
-  }
-  50% {
-    box-shadow: 0 0 26px 2px color-mix(in srgb, var(--correct-line) 55%, transparent);
-  }
-}
-
-@keyframes sd-pulse {
-  0%,
-  100% {
-    opacity: 0.55;
-  }
-  50% {
-    opacity: 1;
-  }
-}
-
-@keyframes sd-shake {
-  0%,
-  100% {
-    transform: translateX(0);
-  }
-  25% {
-    transform: translateX(-7px);
-  }
-  75% {
-    transform: translateX(7px);
-  }
-}
-
-@keyframes sd-drift {
-  from {
-    transform: translate3d(-6%, 0, 0) scale(1);
-  }
-  to {
-    transform: translate3d(6%, 20px, 0) scale(1.12);
-  }
-}
-
-@keyframes sd-fade-up {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  animation: sd-shake 280ms ease-in-out both;
 }
 
 .sd-fade-up {
-  animation: sd-fade-up 400ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation: sd-fade-up 220ms ease-out both;
+}
+
+@keyframes sd-reveal {
+  from { opacity: 0; transform: translateY(7px) scale(0.97); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes sd-row-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes sd-pop {
+  from { opacity: 0; transform: scale(0.7); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes sd-win {
+  50% { box-shadow: 0 0 0 3px rgb(35 154 88 / 24%); }
+}
+
+@keyframes sd-shake {
+  0%, 100% { transform: translateX(0); }
+  35% { transform: translateX(-5px); }
+  70% { transform: translateX(5px); }
+}
+
+@keyframes sd-fade-up {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 @media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+
   .sd-reveal,
-  .sd-reveal::after,
   .sd-row-enter,
   .sd-arrow,
   .sd-win,
-  .sd-pulse,
   .sd-shake,
-  .sd-fade-up,
-  .sd-stage::before,
-  .sd-stage::after {
+  .sd-fade-up {
     animation: none !important;
   }
 }

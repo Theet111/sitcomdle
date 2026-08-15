@@ -1,6 +1,6 @@
 "use client";
 
-import { COLUMNS, MAX_GUESSES, getInitials } from "@/lib/game";
+import { COLUMNS, MAX_GUESSES } from "@/lib/game";
 import type { CellResult, Direction, GuessResult } from "@/lib/types";
 
 const STATUS_CLASS = {
@@ -73,6 +73,7 @@ function AttributeCell({
       className={[
         "sd-cell",
         STATUS_CLASS[cell.status],
+        cell.direction ? `sd-cell--${cell.direction}` : "",
         animate ? "sd-reveal" : "",
         celebrate ? "sd-win" : "",
       ]
@@ -125,22 +126,8 @@ function GuessRow({ result, animate }: { result: GuessResult; animate: boolean }
           .filter(Boolean)
           .join(" ")}
       >
-        <span className="flex w-full items-center gap-2">
-          <span
-            className="grid size-6 shrink-0 place-items-center rounded-md text-[9px] font-black"
-            style={{
-              background: `color-mix(in srgb, ${character.show.accent} 26%, transparent)`,
-              color: character.show.accent,
-            }}
-            aria-hidden
-          >
-            {getInitials(character.name)}
-          </span>
-          <span className="min-w-0">
-            <span className="line-clamp-2 text-[10px] leading-[1.15] font-black tracking-wide break-words uppercase sm:text-[11px]">
-              {character.name}
-            </span>
-          </span>
+        <span className="line-clamp-2 text-[10px] leading-[1.15] font-black tracking-wide break-words uppercase sm:text-[11px]">
+          {character.name}
         </span>
       </div>
 
@@ -179,7 +166,7 @@ export function GuessGrid({ results, animatedIndex }: GuessGridProps) {
 
   return (
     <div className="sd-scroll pb-2">
-      <div role="table" aria-label="Guess history" className="min-w-max">
+      <div role="table" aria-label="Guess history" className="mx-auto w-max min-w-max">
         <GridHeader />
         <div className="flex flex-col gap-2.5">
           {results.map((result, index) => (

@@ -45,7 +45,7 @@ export function ModeTabs({ mode, onChange }: ModeTabsProps) {
     <div
       role="tablist"
       aria-label="Game mode"
-      className="flex items-center gap-1 rounded-full border border-white/8 bg-white/[0.03] p-1 backdrop-blur-xl"
+      className="flex items-center gap-1 rounded-full border border-white/10 bg-[var(--surface)] p-1"
     >
       {TABS.map((tab) => {
         const active = tab.id === mode;
@@ -58,25 +58,19 @@ export function ModeTabs({ mode, onChange }: ModeTabsProps) {
             aria-disabled={tab.disabled}
             onClick={() => onChange(tab.id)}
             className={[
-              "group relative flex items-center gap-2 rounded-full px-4 py-2 text-[11px] font-bold uppercase tracking-[0.16em] transition-all duration-300 sm:px-5 sm:text-xs",
+              "group relative flex items-center gap-1.5 rounded-full px-3 py-2 text-[10px] font-extrabold uppercase tracking-[0.1em] transition-colors sm:gap-2 sm:px-6 sm:text-xs sm:tracking-[0.14em]",
               active
-                ? "text-black"
+                ? "bg-[var(--accent)] text-white"
                 : tab.disabled
                   ? "text-faint hover:text-muted"
                   : "text-muted hover:text-text",
             ].join(" ")}
           >
-            {active && (
-              <span
-                className="absolute inset-0 rounded-full bg-gradient-to-r from-[var(--accent)] to-[var(--accent-2)] shadow-[0_0_22px_-4px_var(--accent)]"
-                aria-hidden
-              />
-            )}
             <span className="relative z-10 flex items-center gap-1.5">
               <span className="size-3.5 sm:size-4">{tab.icon}</span>
               {tab.label}
               {tab.disabled && (
-                <span className="ml-0.5 rounded-full border border-white/10 px-1.5 py-px text-[8px] tracking-[0.1em]">
+                <span className="ml-0.5 hidden rounded-full border border-white/10 px-1.5 py-px text-[8px] tracking-[0.08em] sm:inline-flex">
                   Soon
                 </span>
               )}

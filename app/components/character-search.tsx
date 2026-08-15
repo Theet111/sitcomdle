@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useId, useMemo, useRef, useState } from "react";
-import { getInitials, searchCharacters } from "@/lib/game";
+import { searchCharacters } from "@/lib/game";
 import type { Character } from "@/lib/types";
 
 interface CharacterSearchProps {
@@ -74,10 +74,10 @@ export function CharacterSearch({ guessedIds, disabled, onSelect }: CharacterSea
     <div ref={containerRef} className="relative z-30 w-full">
       <div
         className={[
-          "group relative flex items-center gap-3 rounded-2xl border px-4 py-3.5 transition-all duration-300 sm:rounded-[20px] sm:px-5 sm:py-4",
+          "group relative flex items-center gap-3 rounded-xl border px-4 py-3.5 transition-colors sm:px-5 sm:py-4",
           disabled
-            ? "border-white/5 bg-white/[0.02] opacity-60"
-            : "border-white/8 bg-white/[0.035] hover:border-white/15 focus-within:border-[var(--accent)]/60 focus-within:bg-white/[0.05] focus-within:shadow-[0_0_40px_-12px_var(--accent)]",
+            ? "border-white/5 bg-[var(--surface)] opacity-60"
+            : "border-white/10 bg-[var(--surface-2)] hover:border-white/20 focus-within:border-[var(--accent-3)]",
         ].join(" ")}
       >
         <svg
@@ -85,7 +85,7 @@ export function CharacterSearch({ guessedIds, disabled, onSelect }: CharacterSea
           fill="none"
           stroke="currentColor"
           strokeWidth={2.2}
-          className="size-5 shrink-0 text-faint transition-colors group-focus-within:text-[var(--accent)]"
+          className="size-5 shrink-0 text-muted transition-colors group-focus-within:text-white"
           aria-hidden
         >
           <circle cx="11" cy="11" r="7" />
@@ -111,7 +111,7 @@ export function CharacterSearch({ guessedIds, disabled, onSelect }: CharacterSea
           onFocus={() => setOpen(true)}
           onKeyDown={onKeyDown}
           placeholder="SEARCH FOR A CHARACTER..."
-          className="w-full bg-transparent text-sm font-semibold tracking-[0.12em] text-text uppercase outline-none placeholder:text-faint disabled:cursor-not-allowed sm:text-base"
+          className="w-full bg-transparent text-sm font-semibold tracking-[0.04em] text-text outline-none placeholder:text-[#696969] disabled:cursor-not-allowed sm:text-base"
         />
 
         {query && (
@@ -135,7 +135,7 @@ export function CharacterSearch({ guessedIds, disabled, onSelect }: CharacterSea
         <ul
           id={listId}
           role="listbox"
-          className="sd-fade-up absolute inset-x-0 top-[calc(100%+8px)] max-h-[336px] overflow-y-auto rounded-2xl border border-white/10 bg-[var(--surface)]/95 p-1.5 shadow-[0_28px_60px_-20px_rgba(0,0,0,0.9)] backdrop-blur-xl"
+          className="sd-fade-up absolute inset-x-0 top-[calc(100%+8px)] max-h-[336px] overflow-y-auto rounded-xl border border-white/10 bg-[var(--surface)] p-1.5 shadow-[0_24px_55px_rgba(0,0,0,0.45)]"
         >
           {results.length === 0 && (
             <li className="px-4 py-4 text-center text-xs font-semibold tracking-[0.14em] text-faint uppercase">
@@ -154,7 +154,7 @@ export function CharacterSearch({ guessedIds, disabled, onSelect }: CharacterSea
                   onMouseEnter={() => setActive(index)}
                   onClick={() => submit(character)}
                   className={[
-                    "flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left transition-colors",
+                    "flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-left transition-colors",
                     alreadyGuessed
                       ? "cursor-not-allowed opacity-40"
                       : index === active
@@ -162,22 +162,10 @@ export function CharacterSearch({ guessedIds, disabled, onSelect }: CharacterSea
                         : "hover:bg-white/[0.05]",
                   ].join(" ")}
                 >
-                  <span
-                    className="grid size-8 shrink-0 place-items-center rounded-lg text-[10px] font-black tracking-tight"
-                    style={{
-                      background: `color-mix(in srgb, ${character.show.accent} 26%, transparent)`,
-                      color: character.show.accent,
-                      boxShadow: `inset 0 0 0 1px color-mix(in srgb, ${character.show.accent} 45%, transparent)`,
-                    }}
-                    aria-hidden
-                  >
-                    {getInitials(character.name)}
-                  </span>
-
                   <span className="min-w-0 flex-1">
                     <span className="block truncate text-sm font-bold tracking-wide text-text uppercase">
                       {before}
-                      <mark className="bg-transparent text-[var(--accent)]">{match}</mark>
+                      <mark className="bg-transparent text-[var(--accent-2)]">{match}</mark>
                       {after}
                     </span>
                     <span className="block truncate text-[11px] font-medium tracking-wide text-faint">

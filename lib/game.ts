@@ -253,13 +253,3 @@ export function buildShareText(
   );
   return [`SITCOMDLE #${puzzleNumber} ${score}`, ...rows].join("\n");
 }
-
-/** Initials used on the avatar chip, e.g. "Michael Scott" -> "MS". */
-export function getInitials(name: string): string {
-  return name
-    .split(/[\s.]+/)
-    .filter(Boolean)
-    .slice(0, 2)
-    .map((part) => part[0]?.toUpperCase() ?? "")
-    .join("");
-}

@@ -25,7 +25,7 @@ export interface Show {
   /** Short label used on compact cells / avatars. */
   short: string;
   format: ShowFormat;
-  /** Shared/spin-off universe key (e.g. Cheers <-> Frasier). Partial match when equal. */
+  /** Shared/spin-off universe key. Partial match when equal. */
   universe?: string;
   premiere: number;
   seasons: number;

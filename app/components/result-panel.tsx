@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { MAX_GUESSES, buildShareText, getInitials } from "@/lib/game";
+import { MAX_GUESSES, buildShareText } from "@/lib/game";
 import type { Character, GameMode, GameStatus, GuessResult } from "@/lib/types";
 
 interface ResultPanelProps {
@@ -65,33 +65,11 @@ export function ResultPanel({
 
   return (
     <section
-      className="sd-fade-up relative overflow-hidden rounded-3xl border border-white/10 bg-[var(--surface)]/70 p-5 backdrop-blur-xl sm:p-6"
+      className="sd-fade-up relative overflow-hidden rounded-xl border border-white/10 bg-[var(--surface)] p-5 sm:p-6"
       aria-live="polite"
     >
-      <span
-        aria-hidden
-        className="pointer-events-none absolute inset-x-0 -top-24 h-40 opacity-60 blur-3xl"
-        style={{
-          background: won
-            ? "radial-gradient(50% 60% at 50% 50%, var(--correct-line), transparent 70%)"
-            : "radial-gradient(50% 60% at 50% 50%, var(--incorrect-line), transparent 70%)",
-        }}
-      />
-
       <div className="relative flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
-        <div className="flex items-center gap-4">
-          <span
-            className="grid size-14 shrink-0 place-items-center rounded-2xl text-sm font-black"
-            style={{
-              background: `color-mix(in srgb, ${target.show.accent} 24%, transparent)`,
-              color: target.show.accent,
-              boxShadow: `inset 0 0 0 1px color-mix(in srgb, ${target.show.accent} 50%, transparent)`,
-            }}
-            aria-hidden
-          >
-            {getInitials(target.name)}
-          </span>
-
+        <div className="flex items-center">
           <div>
             <p
               className={`text-[11px] font-black tracking-[0.2em] uppercase ${
@@ -116,7 +94,7 @@ export function ResultPanel({
             <button
               type="button"
               onClick={share}
-              className="rounded-xl border border-white/12 bg-white/[0.04] px-4 py-2.5 text-[11px] font-black tracking-[0.16em] text-text uppercase transition-all hover:border-white/25 hover:bg-white/[0.08] active:scale-95"
+              className="rounded-lg border border-white/12 bg-white/[0.04] px-4 py-2.5 text-[11px] font-black tracking-[0.14em] text-text uppercase transition-colors hover:border-white/25 hover:bg-white/[0.08]"
             >
               {copied ? "Copied!" : "Share"}
             </button>
@@ -125,7 +103,7 @@ export function ResultPanel({
               <button
                 type="button"
                 onClick={onNext}
-                className="rounded-xl bg-gradient-to-r from-[var(--accent)] to-[var(--accent-2)] px-4 py-2.5 text-[11px] font-black tracking-[0.16em] text-black uppercase shadow-[0_0_26px_-8px_var(--accent)] transition-transform active:scale-95"
+                className="rounded-lg bg-[var(--accent)] px-4 py-2.5 text-[11px] font-black tracking-[0.14em] text-white uppercase transition-colors hover:bg-[var(--accent-hover)]"
               >
                 Next character
               </button>
