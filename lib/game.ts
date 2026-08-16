@@ -9,11 +9,6 @@ import type {
 
 export const MAX_GUESSES = 6;
 
-/** Age gap (in years) that still counts as "close" — yellow instead of red. */
-const AGE_PARTIAL_RANGE = 5;
-/** Season gap that still counts as close on the DEBUT column. */
-const SEASON_PARTIAL_RANGE = 1;
-
 export interface ColumnDef {
   key: ColumnKey;
   label: string;
@@ -24,13 +19,13 @@ export interface ColumnDef {
 
 export const COLUMNS: ColumnDef[] = [
   { key: "character", label: "Character", shortLabel: "Character", hint: "Your guess" },
-  { key: "show", label: "Sitcom", shortLabel: "Sitcom", hint: "Yellow = same universe or same shooting format" },
+  { key: "show", label: "Show", shortLabel: "Show", hint: "Yellow = at least one shared story or ensemble type" },
   { key: "gender", label: "Gender", shortLabel: "Gender", hint: "Exact match only" },
   { key: "role", label: "Role", shortLabel: "Role", hint: "Yellow = one tier away (Lead / Main / Supporting / Recurring)" },
   { key: "occupation", label: "Occupation", shortLabel: "Job", hint: "Yellow = same career field" },
   { key: "location", label: "Location", shortLabel: "Where", hint: "Yellow = same state" },
   { key: "age", label: "Age", shortLabel: "Age", hint: "Age at first appearance. Arrow points toward the target" },
-  { key: "debut", label: "Debut", shortLabel: "Debut", hint: "Season of first appearance. Arrow points toward the target" },
+  { key: "debut", label: "Debut year", shortLabel: "Year", hint: "Year of first appearance. Arrow points toward the target" },
 ];
 
 /** Comparable columns only — the character label column is never scored. */
@@ -44,9 +39,8 @@ function compareShow(guess: Character, target: Character): CellResult {
   if (guess.show.id === target.show.id) {
     return { ...base, status: "correct" };
   }
-  const sharedUniverse =
-    guess.show.universe !== undefined && guess.show.universe === target.show.universe;
-  if (sharedUniverse || guess.show.format === target.show.format) {
+  const sharedType = guess.show.types.some((type) => target.show.types.includes(type));
+  if (sharedType) {
     return { ...base, status: "partial" };
   }
   return { ...base, status: "incorrect" };
@@ -100,16 +94,14 @@ function compareNumber(
   key: "age" | "debut",
   guessValue: number,
   targetValue: number,
-  partialRange: number,
   format: (value: number) => string,
 ): CellResult {
   if (guessValue === targetValue) {
     return { key, status: "correct", value: format(guessValue) };
   }
-  const delta = Math.abs(guessValue - targetValue);
   return {
     key,
-    status: delta <= partialRange ? "partial" : "incorrect",
+    status: "incorrect",
     value: format(guessValue),
     direction: targetValue > guessValue ? "up" : "down",
   };
@@ -127,13 +119,12 @@ export function compareCharacters(guess: Character, target: Character): GuessRes
     compareRole(guess, target),
     compareOccupation(guess, target),
     compareLocation(guess, target),
-    compareNumber("age", guess.age, target.age, AGE_PARTIAL_RANGE, String),
+    compareNumber("age", guess.age, target.age, String),
     compareNumber(
       "debut",
-      guess.debutSeason,
-      target.debutSeason,
-      SEASON_PARTIAL_RANGE,
-      (value) => `S${value}`,
+      guess.debutYear,
+      target.debutYear,
+      String,
     ),
   ];
 
@@ -197,10 +188,10 @@ function normalize(value: string): string {
 }
 
 /**
- * Autocomplete over character names (and show names as a fallback), ranked so
- * that "mic" surfaces Michael Scott / Michelle Tanner / Mike Hannigan first.
+ * Autocomplete over character names and show names. Full titles, compact titles,
+ * IDs, and common aliases all participate in show search.
  */
-export function searchCharacters(query: string, limit = 8): Character[] {
+export function searchCharacters(query: string, limit = 16): Character[] {
   const needle = normalize(query).trim();
   if (!needle) return [];
 
@@ -208,7 +199,12 @@ export function searchCharacters(query: string, limit = 8): Character[] {
 
   for (const character of CHARACTERS) {
     const name = normalize(character.name);
-    const show = normalize(character.show.name);
+    const showTerms = [
+      character.show.name,
+      character.show.short,
+      character.show.id.replaceAll("-", " "),
+      ...(character.show.aliases ?? []),
+    ].map(normalize);
     let score = -1;
 
     if (name.startsWith(needle)) {
@@ -217,9 +213,13 @@ export function searchCharacters(query: string, limit = 8): Character[] {
       score = 1;
     } else if (name.includes(needle)) {
       score = 2;
-    } else if (show.startsWith(needle) || show.split(" ").some((w) => w.startsWith(needle))) {
+    } else if (
+      showTerms.some(
+        (show) => show.startsWith(needle) || show.split(" ").some((word) => word.startsWith(needle)),
+      )
+    ) {
       score = 3;
-    } else if (show.includes(needle)) {
+    } else if (showTerms.some((show) => show.includes(needle))) {
       score = 4;
     }
 
@@ -242,6 +242,12 @@ const SHARE_EMOJI = {
   incorrect: "🟥",
 } as const;
 
+function shareEmoji(cell: CellResult): string {
+  if (cell.direction === "up") return "🟧";
+  if (cell.direction === "down") return "🟪";
+  return SHARE_EMOJI[cell.status];
+}
+
 export function buildShareText(
   results: GuessResult[],
   won: boolean,
@@ -249,7 +255,7 @@ export function buildShareText(
 ): string {
   const score = won ? `${results.length}/${MAX_GUESSES}` : `X/${MAX_GUESSES}`;
   const rows = results.map((result) =>
-    result.cells.map((cell) => SHARE_EMOJI[cell.status]).join(""),
+    result.cells.map(shareEmoji).join(""),
   );
   return [`SITCOMDLE #${puzzleNumber} ${score}`, ...rows].join("\n");
 }

@@ -1,13 +1,13 @@
-import type { Show } from "./types";
+import type { Show, ShowType } from "./types";
 
 /**
- * Sitcom database.
+ * Show database.
  *
  * To add a show: append an entry here, then add its characters in characters.ts.
- * `region` powers the LOCATION partial match, `format` / `universe` power the
- * SITCOM partial match.
+ * `region` powers the LOCATION partial match. Story and ensemble types are
+ * attached below so the SHOW partial match stays semantic rather than visual.
  */
-export const SHOWS: Show[] = [
+const SHOW_SEEDS: Array<Omit<Show, "types">> = [
   {
     id: "the-office",
     name: "The Office",
@@ -36,6 +36,7 @@ export const SHOWS: Show[] = [
     id: "brooklyn-99",
     name: "Brooklyn Nine-Nine",
     short: "Brooklyn 99",
+    aliases: ["B99"],
     format: "Single-cam",
     premiere: 2013,
     seasons: 8,
@@ -332,7 +333,82 @@ export const SHOWS: Show[] = [
     country: "USA",
     accent: "#b96773",
   },
+  {
+    id: "house-md",
+    name: "House M.D.",
+    short: "House M.D.",
+    format: "Single-cam",
+    premiere: 2004,
+    seasons: 8,
+    city: "Princeton",
+    region: "New Jersey",
+    country: "USA",
+    accent: "#4d8fa8",
+  },
+  {
+    id: "lost",
+    name: "Lost",
+    short: "Lost",
+    format: "Single-cam",
+    premiere: 2004,
+    seasons: 6,
+    city: "The Island",
+    region: "South Pacific",
+    country: "Unknown",
+    accent: "#708b73",
+  },
+  {
+    id: "supernatural",
+    name: "Supernatural",
+    short: "Supernatural",
+    format: "Single-cam",
+    premiere: 2005,
+    seasons: 15,
+    city: "Lawrence",
+    region: "Kansas",
+    country: "USA",
+    accent: "#9b3e49",
+  },
 ];
+
+const SHOW_TYPES: Record<string, ShowType[]> = {
+  "the-office": ["Workplace"],
+  "parks-and-rec": ["Workplace", "Politics"],
+  "brooklyn-99": ["Workplace", "Crime"],
+  himym: ["Friend group"],
+  "big-bang": ["Friend group"],
+  community: ["Friend group", "School"],
+  "modern-family": ["Family"],
+  "always-sunny": ["Friend group", "Social satire"],
+  "thirty-rock": ["Workplace", "Show business"],
+  scrubs: ["Workplace", "Medical"],
+  "new-girl": ["Friend group"],
+  "arrested-development": ["Family", "Social satire"],
+  superstore: ["Workplace"],
+  "malcolm-middle": ["Family"],
+  curb: ["Social satire"],
+  "two-half-men": ["Family", "Friend group"],
+  veep: ["Workplace", "Politics", "Social satire"],
+  "silicon-valley": ["Workplace", "Tech"],
+  "black-ish": ["Family"],
+  "schitts-creek": ["Family"],
+  "good-place": ["Friend group", "Fantasy"],
+  "kims-convenience": ["Family", "Workplace"],
+  "derry-girls": ["Friend group", "School"],
+  wwdits: ["Friend group", "Supernatural"],
+  "ted-lasso": ["Workplace", "Sports"],
+  abbott: ["Workplace", "School"],
+  hacks: ["Workplace", "Show business"],
+  "house-md": ["Workplace", "Medical"],
+  lost: ["Survival", "Mystery"],
+  supernatural: ["Family", "Supernatural", "Mystery"],
+};
+
+export const SHOWS: Show[] = SHOW_SEEDS.map((show) => {
+  const types = SHOW_TYPES[show.id];
+  if (!types) throw new Error(`Missing show types for "${show.id}"`);
+  return { ...show, types };
+});
 
 export const SHOWS_BY_ID: Record<string, Show> = Object.fromEntries(
   SHOWS.map((show) => [show.id, show]),

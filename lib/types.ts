@@ -2,11 +2,29 @@
  * Shared domain types for the Sitcomdle attribute grid.
  *
  * The data layer (shows.ts / characters.ts) is intentionally free of any UI
- * concerns so new sitcoms and characters can be added without touching React.
+ * concerns so new shows and characters can be added without touching React.
  */
 
-/** How the show is shot — used as a meaningful partial match on the SITCOM column. */
+/** How the show is shot — retained as descriptive metadata. */
 export type ShowFormat = "Mockumentary" | "Multi-cam" | "Single-cam";
+
+/** Story and ensemble shapes used for yellow matches on the SHOW column. */
+export type ShowType =
+  | "Crime"
+  | "Family"
+  | "Fantasy"
+  | "Friend group"
+  | "Medical"
+  | "Mystery"
+  | "Politics"
+  | "School"
+  | "Show business"
+  | "Social satire"
+  | "Sports"
+  | "Supernatural"
+  | "Survival"
+  | "Tech"
+  | "Workplace";
 
 export type Gender = "Male" | "Female";
 
@@ -24,9 +42,11 @@ export interface Show {
   name: string;
   /** Short label used on compact cells / avatars. */
   short: string;
+  /** Common abbreviations accepted by character search. */
+  aliases?: string[];
   format: ShowFormat;
-  /** Shared/spin-off universe key. Partial match when equal. */
-  universe?: string;
+  /** A shared tag makes two different shows a partial match. */
+  types: ShowType[];
   premiere: number;
   seasons: number;
   /** Primary setting of the show. */
@@ -51,8 +71,10 @@ export interface CharacterSeed {
   field: string;
   /** Age at first appearance. */
   age: number;
-  /** Season of first appearance. */
+  /** Season is retained to derive a year for older seed entries. */
   debutSeason: number;
+  /** Exact first-appearance year when season arithmetic would be inaccurate. */
+  debutYear?: number;
   /** Optional overrides for characters who live away from the show's main setting. */
   city?: string;
   region?: string;
@@ -61,6 +83,7 @@ export interface CharacterSeed {
 /** A character with its show data flattened in — what the game logic and UI consume. */
 export interface Character extends CharacterSeed {
   show: Show;
+  debutYear: number;
   city: string;
   region: string;
   country: string;
@@ -100,6 +123,6 @@ export interface GuessResult {
   isWin: boolean;
 }
 
-export type GameMode = "daily" | "duel" | "infinite";
+export type GameMode = "daily" | "infinite";
 
 export type GameStatus = "playing" | "won" | "lost";

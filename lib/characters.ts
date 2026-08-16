@@ -18,7 +18,7 @@ const SEEDS: CharacterSeed[] = [
   { id: "dwight-schrute", name: "Dwight Schrute", showId: "the-office", gender: "Male", role: "Main", occupation: "Asst. to the Manager", field: "Sales", age: 34, debutSeason: 1 },
   { id: "jim-halpert", name: "Jim Halpert", showId: "the-office", gender: "Male", role: "Main", occupation: "Sales Rep", field: "Sales", age: 27, debutSeason: 1 },
   { id: "pam-beesly", name: "Pam Beesly", showId: "the-office", gender: "Female", role: "Main", occupation: "Receptionist", field: "Administration", age: 26, debutSeason: 1 },
-  { id: "andy-bernard", name: "Andy Bernard", showId: "the-office", gender: "Male", role: "Main", occupation: "Sales Rep", field: "Sales", age: 33, debutSeason: 3 },
+  { id: "andy-bernard", name: "Andy Bernard", showId: "the-office", gender: "Male", role: "Main", occupation: "Sales Rep", field: "Sales", age: 33, debutSeason: 3, debutYear: 2006 },
   { id: "ryan-howard", name: "Ryan Howard", showId: "the-office", gender: "Male", role: "Supporting", occupation: "Temp", field: "Administration", age: 26, debutSeason: 1 },
   { id: "kevin-malone", name: "Kevin Malone", showId: "the-office", gender: "Male", role: "Supporting", occupation: "Accountant", field: "Finance", age: 38, debutSeason: 1 },
   { id: "angela-martin", name: "Angela Martin", showId: "the-office", gender: "Female", role: "Supporting", occupation: "Accountant", field: "Finance", age: 30, debutSeason: 1 },
@@ -29,8 +29,8 @@ const SEEDS: CharacterSeed[] = [
   { id: "toby-flenderson", name: "Toby Flenderson", showId: "the-office", gender: "Male", role: "Supporting", occupation: "HR Rep", field: "Human Resources", age: 40, debutSeason: 1 },
   { id: "creed-bratton", name: "Creed Bratton", showId: "the-office", gender: "Male", role: "Supporting", occupation: "Quality Assurance", field: "Operations", age: 60, debutSeason: 1 },
   { id: "meredith-palmer", name: "Meredith Palmer", showId: "the-office", gender: "Female", role: "Supporting", occupation: "Supplier Relations", field: "Operations", age: 43, debutSeason: 1 },
-  { id: "erin-hannon", name: "Erin Hannon", showId: "the-office", gender: "Female", role: "Supporting", occupation: "Receptionist", field: "Administration", age: 25, debutSeason: 5 },
-  { id: "holly-flax", name: "Holly Flax", showId: "the-office", gender: "Female", role: "Recurring", occupation: "HR Rep", field: "Human Resources", age: 35, debutSeason: 4 },
+  { id: "erin-hannon", name: "Erin Hannon", showId: "the-office", gender: "Female", role: "Supporting", occupation: "Receptionist", field: "Administration", age: 25, debutSeason: 5, debutYear: 2009 },
+  { id: "holly-flax", name: "Holly Flax", showId: "the-office", gender: "Female", role: "Recurring", occupation: "HR Rep", field: "Human Resources", age: 35, debutSeason: 4, debutYear: 2008 },
   { id: "jan-levinson", name: "Jan Levinson", showId: "the-office", gender: "Female", role: "Recurring", occupation: "Corporate Exec", field: "Management", age: 40, debutSeason: 1 },
 
   // ------------------------------------------------------- Parks and Recreation
@@ -39,9 +39,9 @@ const SEEDS: CharacterSeed[] = [
   { id: "tom-haverford", name: "Tom Haverford", showId: "parks-and-rec", gender: "Male", role: "Main", occupation: "Parks Admin", field: "Government", age: 29, debutSeason: 1 },
   { id: "april-ludgate", name: "April Ludgate", showId: "parks-and-rec", gender: "Female", role: "Main", occupation: "Intern", field: "Government", age: 20, debutSeason: 1 },
   { id: "andy-dwyer", name: "Andy Dwyer", showId: "parks-and-rec", gender: "Male", role: "Main", occupation: "Musician", field: "Music", age: 28, debutSeason: 1 },
-  { id: "ben-wyatt", name: "Ben Wyatt", showId: "parks-and-rec", gender: "Male", role: "Main", occupation: "State Auditor", field: "Government", age: 34, debutSeason: 2 },
+  { id: "ben-wyatt", name: "Ben Wyatt", showId: "parks-and-rec", gender: "Male", role: "Main", occupation: "State Auditor", field: "Government", age: 34, debutSeason: 2, debutYear: 2010 },
   { id: "ann-perkins", name: "Ann Perkins", showId: "parks-and-rec", gender: "Female", role: "Main", occupation: "Nurse", field: "Healthcare", age: 29, debutSeason: 1 },
-  { id: "chris-traeger", name: "Chris Traeger", showId: "parks-and-rec", gender: "Male", role: "Main", occupation: "City Manager", field: "Government", age: 43, debutSeason: 2 },
+  { id: "chris-traeger", name: "Chris Traeger", showId: "parks-and-rec", gender: "Male", role: "Main", occupation: "City Manager", field: "Government", age: 43, debutSeason: 2, debutYear: 2010 },
   { id: "jerry-gergich", name: "Jerry Gergich", showId: "parks-and-rec", gender: "Male", role: "Supporting", occupation: "Parks Admin", field: "Government", age: 60, debutSeason: 1 },
   { id: "donna-meagle", name: "Donna Meagle", showId: "parks-and-rec", gender: "Female", role: "Supporting", occupation: "Office Manager", field: "Government", age: 40, debutSeason: 1 },
 
@@ -53,6 +53,9 @@ const SEEDS: CharacterSeed[] = [
   { id: "rosa-diaz", name: "Rosa Diaz", showId: "brooklyn-99", gender: "Female", role: "Main", occupation: "Detective", field: "Law Enforcement", age: 30, debutSeason: 1 },
   { id: "charles-boyle", name: "Charles Boyle", showId: "brooklyn-99", gender: "Male", role: "Main", occupation: "Detective", field: "Law Enforcement", age: 36, debutSeason: 1 },
   { id: "gina-linetti", name: "Gina Linetti", showId: "brooklyn-99", gender: "Female", role: "Main", occupation: "Civilian Admin", field: "Administration", age: 29, debutSeason: 1 },
+  { id: "michael-hitchcock", name: "Michael Hitchcock", showId: "brooklyn-99", gender: "Male", role: "Main", occupation: "Detective", field: "Law Enforcement", age: 62, debutSeason: 1 },
+  { id: "norm-scully", name: "Norm Scully", showId: "brooklyn-99", gender: "Male", role: "Main", occupation: "Detective", field: "Law Enforcement", age: 63, debutSeason: 1 },
+  { id: "adrian-pimento", name: "Adrian Pimento", showId: "brooklyn-99", gender: "Male", role: "Recurring", occupation: "Detective", field: "Law Enforcement", age: 37, debutSeason: 3, debutYear: 2016 },
 
   // ------------------------------------------------------ How I Met Your Mother
   { id: "ted-mosby", name: "Ted Mosby", showId: "himym", gender: "Male", role: "Lead", occupation: "Architect", field: "Architecture", age: 27, debutSeason: 1 },
@@ -67,8 +70,8 @@ const SEEDS: CharacterSeed[] = [
   { id: "penny", name: "Penny", showId: "big-bang", gender: "Female", role: "Main", occupation: "Waitress", field: "Food Service", age: 22, debutSeason: 1 },
   { id: "howard-wolowitz", name: "Howard Wolowitz", showId: "big-bang", gender: "Male", role: "Main", occupation: "Engineer", field: "Engineering", age: 26, debutSeason: 1 },
   { id: "raj-koothrappali", name: "Raj Koothrappali", showId: "big-bang", gender: "Male", role: "Main", occupation: "Astrophysicist", field: "Science", age: 26, debutSeason: 1 },
-  { id: "amy-farrah-fowler", name: "Amy Farrah Fowler", showId: "big-bang", gender: "Female", role: "Main", occupation: "Neurobiologist", field: "Science", age: 30, debutSeason: 3 },
-  { id: "bernadette-rostenkowski", name: "Bernadette Rostenkowski", showId: "big-bang", gender: "Female", role: "Main", occupation: "Microbiologist", field: "Science", age: 25, debutSeason: 3 },
+  { id: "amy-farrah-fowler", name: "Amy Farrah Fowler", showId: "big-bang", gender: "Female", role: "Main", occupation: "Neurobiologist", field: "Science", age: 30, debutSeason: 3, debutYear: 2010 },
+  { id: "bernadette-rostenkowski", name: "Bernadette Rostenkowski", showId: "big-bang", gender: "Female", role: "Main", occupation: "Microbiologist", field: "Science", age: 25, debutSeason: 3, debutYear: 2009 },
 
   // ----------------------------------------------------------------- Community
   { id: "jeff-winger", name: "Jeff Winger", showId: "community", gender: "Male", role: "Lead", occupation: "Lawyer", field: "Law", age: 34, debutSeason: 1 },
@@ -96,7 +99,7 @@ const SEEDS: CharacterSeed[] = [
   { id: "dennis-reynolds", name: "Dennis Reynolds", showId: "always-sunny", gender: "Male", role: "Main", occupation: "Bar Owner", field: "Hospitality", age: 30, debutSeason: 1 },
   { id: "dee-reynolds", name: "Dee Reynolds", showId: "always-sunny", gender: "Female", role: "Main", occupation: "Bartender", field: "Hospitality", age: 30, debutSeason: 1 },
   { id: "mac", name: "Mac", showId: "always-sunny", gender: "Male", role: "Main", occupation: "Bar Owner", field: "Hospitality", age: 30, debutSeason: 1 },
-  { id: "frank-reynolds", name: "Frank Reynolds", showId: "always-sunny", gender: "Male", role: "Main", occupation: "Businessman", field: "Business", age: 61, debutSeason: 2 },
+  { id: "frank-reynolds", name: "Frank Reynolds", showId: "always-sunny", gender: "Male", role: "Main", occupation: "Businessman", field: "Business", age: 61, debutSeason: 2, debutYear: 2006 },
 
   // ------------------------------------------------------------------- 30 Rock
   { id: "liz-lemon", name: "Liz Lemon", showId: "thirty-rock", gender: "Female", role: "Lead", occupation: "Head Writer", field: "Entertainment", age: 36, debutSeason: 1 },
@@ -151,7 +154,7 @@ const SEEDS: CharacterSeed[] = [
   { id: "cheryl-david", name: "Cheryl David", showId: "curb", gender: "Female", role: "Main", occupation: "Charity Director", field: "Nonprofit", age: 41, debutSeason: 1 },
   { id: "jeff-greene", name: "Jeff Greene", showId: "curb", gender: "Male", role: "Main", occupation: "Talent Manager", field: "Entertainment", age: 46, debutSeason: 1 },
   { id: "susie-greene", name: "Susie Greene", showId: "curb", gender: "Female", role: "Main", occupation: "Homemaker", field: "Homemaker", age: 38, debutSeason: 1 },
-  { id: "leon-black", name: "Leon Black", showId: "curb", gender: "Male", role: "Main", occupation: "Entrepreneur", field: "Business", age: 40, debutSeason: 6 },
+  { id: "leon-black", name: "Leon Black", showId: "curb", gender: "Male", role: "Main", occupation: "Entrepreneur", field: "Business", age: 40, debutSeason: 6, debutYear: 2007 },
 
   // ------------------------------------------------------- Two and a Half Men
   { id: "charlie-harper", name: "Charlie Harper", showId: "two-half-men", gender: "Male", role: "Lead", occupation: "Jingle Writer", field: "Music", age: 37, debutSeason: 1 },
@@ -239,6 +242,48 @@ const SEEDS: CharacterSeed[] = [
   { id: "marcus-hacks", name: "Marcus", showId: "hacks", gender: "Male", role: "Main", occupation: "CEO", field: "Management", age: 41, debutSeason: 1 },
   { id: "jimmy-lusak", name: "Jimmy LuSak", showId: "hacks", gender: "Male", role: "Main", occupation: "Talent Manager", field: "Entertainment", age: 32, debutSeason: 1 },
   { id: "kayla-schaefer", name: "Kayla Schaefer", showId: "hacks", gender: "Female", role: "Supporting", occupation: "Talent Agent", field: "Entertainment", age: 25, debutSeason: 1 },
+
+  // ---------------------------------------------------- Recurring fan favorites
+  { id: "david-wallace", name: "David Wallace", showId: "the-office", gender: "Male", role: "Recurring", occupation: "CFO", field: "Management", age: 45, debutSeason: 2, debutYear: 2006 },
+  { id: "todd-packer", name: "Todd Packer", showId: "the-office", gender: "Male", role: "Recurring", occupation: "Sales Rep", field: "Sales", age: 43, debutSeason: 1, debutYear: 2005 },
+  { id: "tammy-swanson", name: "Tammy Swanson", showId: "parks-and-rec", gender: "Female", role: "Recurring", occupation: "Librarian", field: "Government", age: 42, debutSeason: 2, debutYear: 2009 },
+  { id: "jean-ralphio", name: "Jean-Ralphio Saperstein", showId: "parks-and-rec", gender: "Male", role: "Recurring", occupation: "Entrepreneur", field: "Business", age: 25, debutSeason: 2, debutYear: 2010 },
+  { id: "doug-judy", name: "Doug Judy", showId: "brooklyn-99", gender: "Male", role: "Recurring", occupation: "Car Thief", field: "Crime", age: 34, debutSeason: 1, debutYear: 2014 },
+  { id: "kevin-cozner", name: "Kevin Cozner", showId: "brooklyn-99", gender: "Male", role: "Recurring", occupation: "Professor", field: "Education", age: 48, debutSeason: 1, debutYear: 2014 },
+  { id: "ranjit", name: "Ranjit Singh", showId: "himym", gender: "Male", role: "Recurring", occupation: "Driver", field: "Transportation", age: 42, debutSeason: 1, debutYear: 2005 },
+  { id: "stuart-bloom", name: "Stuart Bloom", showId: "big-bang", gender: "Male", role: "Recurring", occupation: "Comic Shop Owner", field: "Retail", age: 34, debutSeason: 2, debutYear: 2008 },
+  { id: "wil-wheaton", name: "Wil Wheaton", showId: "big-bang", gender: "Male", role: "Recurring", occupation: "Actor", field: "Entertainment", age: 37, debutSeason: 3, debutYear: 2009 },
+  { id: "magnitude", name: "Magnitude", showId: "community", gender: "Male", role: "Recurring", occupation: "Student", field: "Student", age: 18, debutSeason: 2, debutYear: 2011 },
+  { id: "dylan-marshall", name: "Dylan Marshall", showId: "modern-family", gender: "Male", role: "Recurring", occupation: "Musician", field: "Music", age: 18, debutSeason: 1, debutYear: 2009 },
+
+  // ---------------------------------------------------------------- House M.D.
+  { id: "gregory-house", name: "Gregory House", showId: "house-md", gender: "Male", role: "Lead", occupation: "Diagnostician", field: "Healthcare", age: 45, debutSeason: 1, debutYear: 2004 },
+  { id: "james-wilson", name: "James Wilson", showId: "house-md", gender: "Male", role: "Main", occupation: "Oncologist", field: "Healthcare", age: 35, debutSeason: 1, debutYear: 2004 },
+  { id: "lisa-cuddy", name: "Lisa Cuddy", showId: "house-md", gender: "Female", role: "Main", occupation: "Hospital Dean", field: "Management", age: 36, debutSeason: 1, debutYear: 2004 },
+  { id: "eric-foreman", name: "Eric Foreman", showId: "house-md", gender: "Male", role: "Main", occupation: "Neurologist", field: "Healthcare", age: 30, debutSeason: 1, debutYear: 2004 },
+  { id: "robert-chase", name: "Robert Chase", showId: "house-md", gender: "Male", role: "Main", occupation: "Doctor", field: "Healthcare", age: 30, debutSeason: 1, debutYear: 2004 },
+  { id: "allison-cameron", name: "Allison Cameron", showId: "house-md", gender: "Female", role: "Main", occupation: "Immunologist", field: "Healthcare", age: 25, debutSeason: 1, debutYear: 2004 },
+  { id: "stacy-warner", name: "Stacy Warner", showId: "house-md", gender: "Female", role: "Recurring", occupation: "Lawyer", field: "Law", age: 38, debutSeason: 1, debutYear: 2005 },
+  { id: "amber-volakis", name: "Amber Volakis", showId: "house-md", gender: "Female", role: "Recurring", occupation: "Doctor", field: "Healthcare", age: 32, debutSeason: 4, debutYear: 2007 },
+
+  // ---------------------------------------------------------------------- Lost
+  { id: "jack-shephard", name: "Jack Shephard", showId: "lost", gender: "Male", role: "Lead", occupation: "Surgeon", field: "Healthcare", age: 34, debutSeason: 1, debutYear: 2004 },
+  { id: "kate-austen", name: "Kate Austen", showId: "lost", gender: "Female", role: "Main", occupation: "Fugitive", field: "Crime", age: 27, debutSeason: 1, debutYear: 2004 },
+  { id: "james-sawyer-ford", name: "James 'Sawyer' Ford", showId: "lost", gender: "Male", role: "Main", occupation: "Con Artist", field: "Crime", age: 35, debutSeason: 1, debutYear: 2004 },
+  { id: "john-locke", name: "John Locke", showId: "lost", gender: "Male", role: "Main", occupation: "Office Worker", field: "Business", age: 48, debutSeason: 1, debutYear: 2004 },
+  { id: "hugo-reyes", name: "Hugo Reyes", showId: "lost", gender: "Male", role: "Main", occupation: "Lottery Winner", field: "Unemployed", age: 26, debutSeason: 1, debutYear: 2004 },
+  { id: "sayid-jarrah", name: "Sayid Jarrah", showId: "lost", gender: "Male", role: "Main", occupation: "Comms Officer", field: "Military", age: 37, debutSeason: 1, debutYear: 2004 },
+  { id: "desmond-hume", name: "Desmond Hume", showId: "lost", gender: "Male", role: "Supporting", occupation: "Sailor", field: "Transportation", age: 35, debutSeason: 2, debutYear: 2005 },
+  { id: "benjamin-linus", name: "Benjamin Linus", showId: "lost", gender: "Male", role: "Supporting", occupation: "Community Leader", field: "Management", age: 42, debutSeason: 2, debutYear: 2006 },
+
+  // --------------------------------------------------------------- Supernatural
+  { id: "dean-winchester", name: "Dean Winchester", showId: "supernatural", gender: "Male", role: "Lead", occupation: "Hunter", field: "Supernatural", age: 26, debutSeason: 1, debutYear: 2005 },
+  { id: "sam-winchester", name: "Sam Winchester", showId: "supernatural", gender: "Male", role: "Lead", occupation: "Hunter", field: "Supernatural", age: 22, debutSeason: 1, debutYear: 2005 },
+  { id: "bobby-singer", name: "Bobby Singer", showId: "supernatural", gender: "Male", role: "Supporting", occupation: "Hunter", field: "Supernatural", age: 56, debutSeason: 1, debutYear: 2006 },
+  { id: "castiel", name: "Castiel", showId: "supernatural", gender: "Male", role: "Main", occupation: "Angel", field: "Supernatural", age: 35, debutSeason: 4, debutYear: 2008 },
+  { id: "crowley", name: "Crowley", showId: "supernatural", gender: "Male", role: "Recurring", occupation: "Demon", field: "Supernatural", age: 50, debutSeason: 5, debutYear: 2009 },
+  { id: "rowena-macleod", name: "Rowena MacLeod", showId: "supernatural", gender: "Female", role: "Recurring", occupation: "Witch", field: "Supernatural", age: 300, debutSeason: 10, debutYear: 2014 },
+  { id: "charlie-bradbury", name: "Charlie Bradbury", showId: "supernatural", gender: "Female", role: "Recurring", occupation: "Hacker", field: "Technology", age: 26, debutSeason: 7, debutYear: 2012 },
 ];
 
 /** Every playable character, with its show data resolved. Sorted by name for the search list. */
@@ -250,6 +295,7 @@ export const CHARACTERS: Character[] = SEEDS.map((seed) => {
   return {
     ...seed,
     show,
+    debutYear: seed.debutYear ?? show.premiere + seed.debutSeason - 1,
     city: seed.city ?? show.city,
     region: seed.region ?? show.region,
     country: show.country,

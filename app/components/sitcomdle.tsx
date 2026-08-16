@@ -35,6 +35,13 @@ interface Stats {
 interface Round {
   target: Character;
   guesses: Character[];
+  /** Present for daily rounds so yesterday's state can never leak past UTC midnight. */
+  dateKey?: string;
+}
+
+interface StatsOverride {
+  dateKey: string;
+  value: Stats;
 }
 
 const EMPTY_STATS: Stats = { played: 0, wins: 0, streak: 0, best: 0, last: null };
@@ -47,12 +54,43 @@ const EMPTY_STATS: Stats = { played: 0, wins: 0, streak: 0, best: 0, last: null 
 /*  and the real key on the client, with no hydration mismatch.               */
 /* -------------------------------------------------------------------------- */
 
-const subscribeToNothing = () => () => {};
 const readClientDateKey = () => getDateKey();
 const readServerDateKey = () => null;
 
+/** Notify React at UTC midnight and after a sleeping tab becomes active again. */
+function subscribeToUtcDate(callback: () => void): () => void {
+  let timer: number | undefined;
+
+  function scheduleMidnight() {
+    const now = new Date();
+    const nextMidnight = Date.UTC(
+      now.getUTCFullYear(),
+      now.getUTCMonth(),
+      now.getUTCDate() + 1,
+    );
+    timer = window.setTimeout(() => {
+      callback();
+      scheduleMidnight();
+    }, Math.max(250, nextMidnight - now.getTime() + 50));
+  }
+
+  function syncAfterWake() {
+    if (!document.hidden) callback();
+  }
+
+  scheduleMidnight();
+  window.addEventListener("focus", syncAfterWake);
+  document.addEventListener("visibilitychange", syncAfterWake);
+
+  return () => {
+    window.clearTimeout(timer);
+    window.removeEventListener("focus", syncAfterWake);
+    document.removeEventListener("visibilitychange", syncAfterWake);
+  };
+}
+
 function useDateKey(): string | null {
-  return useSyncExternalStore(subscribeToNothing, readClientDateKey, readServerDateKey);
+  return useSyncExternalStore(subscribeToUtcDate, readClientDateKey, readServerDateKey);
 }
 
 function readStats(): Stats {
@@ -86,7 +124,7 @@ function readSavedGuesses(dateKey: string): Character[] {
 }
 
 function loadDailyRound(dateKey: string): Round {
-  return { target: getDailyCharacter(dateKey), guesses: readSavedGuesses(dateKey) };
+  return { target: getDailyCharacter(dateKey), guesses: readSavedGuesses(dateKey), dateKey };
 }
 
 function deriveStatus(round: Round | null): GameStatus {
@@ -118,7 +156,7 @@ export function Sitcomdle() {
   const [mode, setMode] = useState<GameMode>("daily");
   /** Set once the player interacts; until then the daily round is derived below. */
   const [round, setRound] = useState<Round | null>(null);
-  const [statsOverride, setStatsOverride] = useState<Stats | null>(null);
+  const [statsOverride, setStatsOverride] = useState<StatsOverride | null>(null);
   const [animatedIndex, setAnimatedIndex] = useState<number | null>(null);
   const [revealing, setRevealing] = useState(false);
   const [notice, setNotice] = useState<string | null>(null);
@@ -137,12 +175,22 @@ export function Sitcomdle() {
   );
 
   const activeRound = useMemo<Round | null>(
-    () => round ?? (dateKey ? loadDailyRound(dateKey) : null),
-    [round, dateKey],
+    () => {
+      if (mode === "daily" && dateKey && round?.dateKey !== dateKey) {
+        return loadDailyRound(dateKey);
+      }
+      return round;
+    },
+    [round, dateKey, mode],
   );
 
   const stats = useMemo<Stats>(
-    () => statsOverride ?? (dateKey ? readStats() : EMPTY_STATS),
+    () =>
+      statsOverride?.dateKey === dateKey
+        ? statsOverride.value
+        : dateKey
+          ? readStats()
+          : EMPTY_STATS,
     [statsOverride, dateKey],
   );
 
@@ -166,7 +214,7 @@ export function Sitcomdle() {
 
       const { target } = activeRound;
       const guesses = [...activeRound.guesses, character];
-      const next: Round = { target, guesses };
+      const next: Round = { ...activeRound, target, guesses };
       const outcome = deriveStatus(next);
 
       setRound(next);
@@ -179,7 +227,10 @@ export function Sitcomdle() {
           JSON.stringify(guesses.map((guess) => guess.id)),
         );
         if (outcome !== "playing") {
-          setStatsOverride(recordDailyResult(dateKey, outcome === "won"));
+          setStatsOverride({
+            dateKey,
+            value: recordDailyResult(dateKey, outcome === "won"),
+          });
         }
       }
 
@@ -234,8 +285,9 @@ export function Sitcomdle() {
   const guessCount = activeRound?.guesses.length ?? 0;
   const remaining = MAX_GUESSES - guessCount;
   const puzzleNumber = dateKey ? getPuzzleNumber(dateKey) : 0;
-  const isDuel = mode === "duel";
-  const inputDisabled = isDuel || !activeRound || revealing || settledStatus !== "playing";
+  const inputDisabled = !activeRound || revealing || settledStatus !== "playing";
+  const visibleAnimatedIndex =
+    mode === "daily" && round?.dateKey !== dateKey ? null : animatedIndex;
 
   return (
     <div className="sd-stage min-h-full">
@@ -306,7 +358,6 @@ export function Sitcomdle() {
                   ? `Daily #${puzzleNumber} · ${CHARACTERS.length} characters`
                   : "Loading today's character")}
               {mode === "infinite" && `Endless mode · Streak ${infiniteStreak}`}
-              {isDuel && "Head-to-head · Coming soon"}
             </p>
           </header>
 
@@ -338,17 +389,11 @@ export function Sitcomdle() {
             </p>
           </div>
 
-          {isDuel ? (
-            <div className="sd-board-shell">
-              <DuelPlaceholder />
-            </div>
-          ) : (
-            <div className="sd-board-shell">
-              <GuessGrid results={results} animatedIndex={animatedIndex} />
-            </div>
-          )}
+          <div className="sd-board-shell">
+            <GuessGrid results={results} animatedIndex={visibleAnimatedIndex} />
+          </div>
 
-          {!isDuel && status !== "playing" && activeRound && (
+          {status !== "playing" && activeRound && (
             <div className="sd-board-shell">
               <ResultPanel
                 status={status}
@@ -361,7 +406,7 @@ export function Sitcomdle() {
             </div>
           )}
 
-          {!isDuel && <Legend />}
+          <Legend />
         </section>
 
         <AboutSection />
@@ -409,25 +454,6 @@ function Legend() {
   );
 }
 
-function DuelPlaceholder() {
-  return (
-    <section className="sd-fade-up border-y border-white/10 py-14 text-center">
-      <div className="mx-auto flex max-w-md flex-col items-center gap-4">
-        <span className="grid size-12 place-items-center text-[var(--accent-2)]">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="size-6 text-[var(--accent-2)]">
-            <path d="M4 4l10 10M20 4L10 14" strokeLinecap="round" />
-            <path d="M6 20l3-3M18 20l-3-3" strokeLinecap="round" />
-          </svg>
-        </span>
-        <h2 className="text-xl font-black tracking-tight text-text uppercase">Duel mode</h2>
-        <p className="text-xs leading-relaxed font-semibold tracking-[0.1em] text-muted uppercase">
-          Race a friend through the same six guesses. Wiring up soon.
-        </p>
-      </div>
-    </section>
-  );
-}
-
 function AboutSection() {
   const modernShows = SHOWS.filter((show) => show.premiere >= 2000).sort(
     (a, b) => a.premiere - b.premiere || a.name.localeCompare(b.name),
@@ -452,7 +478,7 @@ function AboutSection() {
           <p className="mt-5 text-base leading-7 text-muted">
             Sitcomdle is a daily character guessing game built for people who know their
             Dunder Mifflin from their Greendale. You get six guesses. Every row tells you
-            how your pick compares by show, role, job, location, age, and first season.
+            how your pick compares by show, role, job, location, age, and debut year.
           </p>
         </div>
 
@@ -475,11 +501,11 @@ function AboutSection() {
           <div>
             <p className="sd-kicker">The cast list</p>
             <h3 className="mt-3 text-2xl font-black tracking-[-0.03em]">
-              {CHARACTERS.length} characters from {SHOWS.length} sitcoms
+              {CHARACTERS.length} characters from {SHOWS.length} shows
             </h3>
             <p className="mt-4 max-w-md text-sm leading-6 text-muted">
-              Every title in the pool premiered in 2000 or later, spanning major US, UK,
-              and Canadian ensembles from the turn of the millennium through today.
+              Every title in the pool premiered in 2000 or later, spanning modern sitcoms
+              and a few cult TV crossovers from the turn of the millennium through today.
             </p>
           </div>
           <ol className="grid gap-x-8 gap-y-3 text-sm sm:grid-cols-2">
@@ -502,7 +528,7 @@ function AboutSection() {
               },
               {
                 question: "What counts as a partial match?",
-                answer: "Yellow applies when sitcoms share a filming format or universe, roles are one tier apart, occupations share a career field, or locations share a region. Gender has no partial state. Age and debut use the orange/purple arrows instead: they tell you whether the target is higher or lower, while an exact value turns green.",
+                answer: "On the Show column, yellow means the titles share a story or ensemble type such as Workplace, Friend group, Family, Medical, or Supernatural. Roles turn yellow when they are one tier apart, occupations when they share a career field, and locations when they share a region. Gender has no partial state. Age and debut year use orange/purple arrows instead.",
               },
               {
                 question: "How old is a character in the grid?",

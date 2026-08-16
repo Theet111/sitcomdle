@@ -4,7 +4,7 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "Sitcomdle — Guess the sitcom character",
   description:
-    "A daily sitcom character guessing game. Six guesses, eight attributes, one hidden character.",
+    "A daily TV character guessing game. Six guesses, eight attributes, one hidden character.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

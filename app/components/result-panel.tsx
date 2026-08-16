@@ -84,7 +84,7 @@ export function ResultPanel({
               {target.name}
             </h2>
             <p className="mt-1.5 text-xs font-semibold tracking-[0.14em] text-muted uppercase">
-              {target.show.name} · {target.occupation} · S{target.debutSeason}
+              {target.show.name} · {target.occupation} · {target.debutYear}
             </p>
           </div>
         </div>
@@ -112,7 +112,7 @@ export function ResultPanel({
 
           {mode === "daily" && (
             <p className="text-[10px] font-bold tracking-[0.18em] text-faint uppercase">
-              Next sitcom in <span className="font-mono text-muted">{countdown}</span>
+              Next show in <span className="font-mono text-muted">{countdown}</span>
             </p>
           )}
         </div>

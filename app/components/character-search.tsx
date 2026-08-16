@@ -99,6 +99,7 @@ export function CharacterSearch({ guessedIds, disabled, onSelect }: CharacterSea
           aria-expanded={showList}
           aria-controls={listId}
           aria-autocomplete="list"
+          aria-label="Search by character or show"
           autoComplete="off"
           spellCheck={false}
           disabled={disabled}
@@ -110,7 +111,7 @@ export function CharacterSearch({ guessedIds, disabled, onSelect }: CharacterSea
           }}
           onFocus={() => setOpen(true)}
           onKeyDown={onKeyDown}
-          placeholder="SEARCH FOR A CHARACTER..."
+          placeholder="SEARCH BY CHARACTER OR SHOW..."
           className="w-full bg-transparent text-sm font-semibold tracking-[0.04em] text-text outline-none placeholder:text-[#696969] disabled:cursor-not-allowed sm:text-base"
         />
 
@@ -139,7 +140,7 @@ export function CharacterSearch({ guessedIds, disabled, onSelect }: CharacterSea
         >
           {results.length === 0 && (
             <li className="px-4 py-4 text-center text-xs font-semibold tracking-[0.14em] text-faint uppercase">
-              No character found
+              No character or show found
             </li>
           )}
 
