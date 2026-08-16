@@ -65,7 +65,7 @@ export function ResultPanel({
 
   return (
     <section
-      className="sd-fade-up relative overflow-hidden rounded-xl border border-white/10 bg-[var(--surface)] p-5 sm:p-6"
+      className="sd-fade-up relative overflow-hidden rounded-xl border border-[var(--answer-line)] bg-[var(--answer-bg)] p-5 sm:p-6"
       aria-live="polite"
     >
       <div className="relative flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">

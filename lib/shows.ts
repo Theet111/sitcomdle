@@ -9,6 +9,19 @@ import type { Show, ShowType } from "./types";
  */
 const SHOW_SEEDS: Array<Omit<Show, "types">> = [
   {
+    id: "friends",
+    name: "Friends",
+    short: "Friends",
+    aliases: ["F.R.I.E.N.D.S"],
+    format: "Multi-cam",
+    premiere: 1994,
+    seasons: 10,
+    city: "Manhattan",
+    region: "New York",
+    country: "USA",
+    accent: "#9b6cff",
+  },
+  {
     id: "the-office",
     name: "The Office",
     short: "The Office",
@@ -372,6 +385,7 @@ const SHOW_SEEDS: Array<Omit<Show, "types">> = [
 ];
 
 const SHOW_TYPES: Record<string, ShowType[]> = {
+  friends: ["Friend group"],
   "the-office": ["Workplace"],
   "parks-and-rec": ["Workplace", "Politics"],
   "brooklyn-99": ["Workplace", "Crime"],

@@ -13,6 +13,18 @@ import type { Character, CharacterSeed } from "./types";
  *    a grid cell); `field` is the broader career family used for partial matches.
  */
 const SEEDS: CharacterSeed[] = [
+  // -------------------------------------------------------------------- Friends
+  { id: "rachel-green", name: "Rachel Green", showId: "friends", gender: "Female", role: "Main", occupation: "Fashion Buyer", field: "Fashion", age: 25, debutSeason: 1, debutYear: 1994 },
+  { id: "ross-geller", name: "Ross Geller", showId: "friends", gender: "Male", role: "Main", occupation: "Paleontologist", field: "Education", age: 27, debutSeason: 1, debutYear: 1994 },
+  { id: "monica-geller", name: "Monica Geller", showId: "friends", gender: "Female", role: "Main", occupation: "Chef", field: "Hospitality", age: 25, debutSeason: 1, debutYear: 1994 },
+  { id: "chandler-bing", name: "Chandler Bing", showId: "friends", gender: "Male", role: "Main", occupation: "Statistical Analyst", field: "Business", age: 26, debutSeason: 1, debutYear: 1994 },
+  { id: "joey-tribbiani", name: "Joey Tribbiani", showId: "friends", gender: "Male", role: "Main", occupation: "Actor", field: "Entertainment", age: 26, debutSeason: 1, debutYear: 1994 },
+  { id: "phoebe-buffay", name: "Phoebe Buffay", showId: "friends", gender: "Female", role: "Main", occupation: "Massage Therapist", field: "Healthcare", age: 27, debutSeason: 1, debutYear: 1994 },
+  { id: "gunther-friends", name: "Gunther", showId: "friends", gender: "Male", role: "Recurring", occupation: "Coffee Shop Manager", field: "Hospitality", age: 32, debutSeason: 1, debutYear: 1994 },
+  { id: "janice-litman", name: "Janice Litman-Goralnik", showId: "friends", gender: "Female", role: "Recurring", occupation: "Businesswoman", field: "Business", age: 31, debutSeason: 1, debutYear: 1994 },
+  { id: "richard-burke", name: "Richard Burke", showId: "friends", gender: "Male", role: "Recurring", occupation: "Ophthalmologist", field: "Healthcare", age: 48, debutSeason: 2, debutYear: 1996 },
+  { id: "mike-hannigan", name: "Mike Hannigan", showId: "friends", gender: "Male", role: "Recurring", occupation: "Pianist", field: "Music", age: 33, debutSeason: 9, debutYear: 2002 },
+
   // ---------------------------------------------------------------- The Office
   { id: "michael-scott", name: "Michael Scott", showId: "the-office", gender: "Male", role: "Lead", occupation: "Regional Manager", field: "Management", age: 40, debutSeason: 1 },
   { id: "dwight-schrute", name: "Dwight Schrute", showId: "the-office", gender: "Male", role: "Main", occupation: "Asst. to the Manager", field: "Sales", age: 34, debutSeason: 1 },

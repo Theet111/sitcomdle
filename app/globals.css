@@ -4,8 +4,11 @@
  color-scheme: dark;
 --bg: #1a1a1a;
 --bg-soft: #111521;
+--header-bg: #1a1a1a;
 --surface: #182038;
 --surface-2: #222B49;
+--answer-bg: #174F3A;
+--answer-line: #2D7457;
 --line: #333D62;
 --line-strong: #4A567F;
 --text: #FFF8EC;
@@ -82,7 +85,7 @@ summary {
 .sd-topbar {
   height: 108px;
   border-bottom: 2px solid var(--accent-2);
-  background: var(--bg-soft);
+  background: var(--header-bg);
 }
 
 .sd-icon-button {

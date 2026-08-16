@@ -455,7 +455,7 @@ function Legend() {
 }
 
 function AboutSection() {
-  const modernShows = SHOWS.filter((show) => show.premiere >= 2000).sort(
+  const showsByPremiere = [...SHOWS].sort(
     (a, b) => a.premiere - b.premiere || a.name.localeCompare(b.name),
   );
 
@@ -504,12 +504,12 @@ function AboutSection() {
               {CHARACTERS.length} characters from {SHOWS.length} shows
             </h3>
             <p className="mt-4 max-w-md text-sm leading-6 text-muted">
-              Every title in the pool premiered in 2000 or later, spanning modern sitcoms
-              and a few cult TV crossovers from the turn of the millennium through today.
+              The pool spans Friends and modern favourites from the 2000s onward, plus a
+              few cult TV crossovers that fit the character-guessing format.
             </p>
           </div>
           <ol className="grid gap-x-8 gap-y-3 text-sm sm:grid-cols-2">
-            {modernShows.map((show) => (
+            {showsByPremiere.map((show) => (
               <li key={show.id} className="flex items-baseline justify-between gap-4 border-b border-white/[0.07] pb-2">
                 <span className="font-semibold text-[#d8d8d8]">{show.name}</span>
                 <span className="font-mono text-[11px] text-faint">{show.premiere}</span>
